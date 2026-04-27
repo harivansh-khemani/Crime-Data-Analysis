@@ -30,10 +30,9 @@ COPY datasets/ ./datasets/
 
 # Set environment variables
 ENV NODE_ENV=production
-ENV PORT=5000
 
-# Expose the port
-EXPOSE 5000
+# Expose the port (Render uses 10000 by default)
+EXPOSE 10000
 
 # Start the application from the backend directory
 WORKDIR /app/backend
