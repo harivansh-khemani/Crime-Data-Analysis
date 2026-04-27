@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, CircleMarker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import axios from 'axios';
+import api from '../utils/api';
 import L from 'leaflet';
 
 // Fix for default marker icons in Leaflet with Vite/Webpack
@@ -23,10 +23,7 @@ const MapPage = () => {
     useEffect(() => {
         const fetchCrimes = async () => {
             try {
-                const token = localStorage.getItem('token');
-                const res = await axios.get('/api/crimes?limit=500', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                const res = await api.get('/api/crimes?limit=500');
                 setCrimes(res.data.data);
             } catch (err) {
                 console.error(err);

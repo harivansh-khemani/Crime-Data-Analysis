@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import { 
     Plus, 
     Upload, 
@@ -25,10 +25,7 @@ const CrimeList = () => {
 
     const fetchCrimes = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const res = await axios.get(`/api/crimes?page=${page}&limit=10&location=${search}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const res = await api.get(`/api/crimes?page=${page}&limit=10&location=${search}`);
             setCrimes(res.data.data);
             setTotal(res.data.total);
         } catch (err) {
@@ -46,10 +43,8 @@ const CrimeList = () => {
         formData.append('file', file);
 
         try {
-            const token = localStorage.getItem('token');
-            await axios.post('/api/crimes/upload', formData, {
+            await api.post('/api/crimes/upload', formData, {
                 headers: { 
-                    Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data'
                 }
             });

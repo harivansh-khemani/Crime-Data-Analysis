@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import { 
   ShieldAlert, 
   MapPin, 
@@ -54,8 +54,6 @@ const Dashboard = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      const headers = { Authorization: `Bearer ${token}` };
       const { startDate, endDate } = getDateRange(filters.range);
       
       const params = {
@@ -66,9 +64,9 @@ const Dashboard = () => {
       };
 
       const [trendsRes, distRes, crimesRes] = await Promise.all([
-        axios.get('/api/analytics/trends', { headers, params }),
-        axios.get('/api/analytics/distribution', { headers, params }),
-        axios.get('/api/crimes?limit=1', { headers, params: { location: filters.location, type: filters.type } })
+        api.get('/api/analytics/trends', { params }),
+        api.get('/api/analytics/distribution', { params }),
+        api.get('/api/crimes?limit=1', { params: { location: filters.location, type: filters.type } })
       ]);
 
       setTrends(trendsRes.data.data);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import { Brain, TrendingUp, MapPin, Zap } from 'lucide-react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -20,11 +20,9 @@ const Analytics = () => {
 
   const fetchAI = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const headers = { Authorization: `Bearer ${token}` };
       const [insightsRes, trendsRes] = await Promise.all([
-        axios.get('/api/analytics/insights', { headers }),
-        axios.get('/api/analytics/trends', { headers })
+        api.get('/api/analytics/insights'),
+        api.get('/api/analytics/trends')
       ]);
       setInsights(insightsRes.data.data);
       setTrends(trendsRes.data.data);
@@ -37,9 +35,7 @@ const Analytics = () => {
 
   const fetchSpark = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const headers = { Authorization: `Bearer ${token}` };
-      const res = await axios.get('/api/analytics/spark-insights', { headers });
+      const res = await api.get('/api/analytics/spark-insights');
       setSparkInsights(res.data.data);
     } catch (err) {
       console.error('Spark Error:', err);
